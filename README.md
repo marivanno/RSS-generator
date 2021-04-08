@@ -1,2 +1,3 @@
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/marivanno/frontend-project-lvl3/workflows/hexlet-check/badge.svg)](https://github.com/marivanno/frontend-project-lvl3/actions)
+# 🚀 Welcome to my RSS generator project!
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/88e5ffadd68371b0e6a1/maintainability)](https://codeclimate.com/github/marivanno/frontend-project-lvl3/maintainability)
