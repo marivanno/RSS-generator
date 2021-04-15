@@ -1,5 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/scss/bootstrap.scss';
+import app from './main';
 
-console.log('Hello World!');
-console.log('Hello World!@');
-
+app();
