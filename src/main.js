@@ -2,7 +2,7 @@
 import * as yup from 'yup';
 // import handler from './handler';
 import view from './view';
-import getDataXML from './utilits';
+import getXML, { isValidData } from './utilits';
 import parser from './parser';
 
 const state = {
@@ -31,25 +31,26 @@ export default () => {
         state.currentLink.validateStatus = true;
         state.currentLink.data = link;
         state.addedLinks.push(link);
-        view(state).mainstate = 'valid';
+
+        view(state).mainstate = 'gettingData';
+        getXML(state.currentLink.data).then((XML) => isValidData(XML.data))
+          .catch((err) => {
+            view(state).mainstate = 'dataIsWrong';
+            throw new Error(err);
+          })
+          .then((dataXML) => {
+            view(state).mainstate = 'hendlingGettedData';
+            const { feed, posts } = parser(dataXML);
+            state.feeds = [...state.feeds, ...feed];
+            state.posts = [...state.posts, ...posts];
+          })
+          .then(() => {
+            view(state).mainstate = 'addingposts';
+            console.log('the end');
+          });
       }).catch((err) => {
-        view(state).mainstate = 'notvalid';
-        throw console.error(err);
-      }).then(() => {
-        view(state).mainstate = 'handling';
-        return getDataXML(state.currentLink.data);
-      })
-      .then((dataXML) => {
-        state.tmpXML = dataXML.data;
-      })
-      .then(() => {
-        const { feed, posts } = parser(state.tmpXML);
-        state.feeds = [...state.feeds, ...feed];
-        state.posts = [...state.posts, ...posts];
-        console.log(state.posts);
-        console.log(state.feeds);
-        view(state).mainstate = 'addingposts';
-      })
-      .then(() => console.log('sucsess'));
+        view(state).mainstate = 'linkIsNotValid';
+        throw new Error(err);
+      });
   });
 };

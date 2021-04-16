@@ -12,13 +12,18 @@ const stausLinkGenerator = (status) => {
     elInput.classList.remove('is-invalid');
     document.querySelector('.feedback').remove();
   }
-  if (status === true) {
+  if (status === 'addingposts') {
     feedback.classList.add('feedback', 'text-success', 'text-sucsess');
     feedback.textContent = 'RSS успешно загружен';
   }
-  if (status === false) {
+  if (status === 'linkIsNotValid') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
     feedback.textContent = 'Ссылка должна быть валидным URL';
+  }
+
+  if (status === 'dataIsWrong') {
+    feedback.classList.add('feedback', 'text-success', 'text-danger');
+    feedback.textContent = 'С Вашими данными по ссылке что-то не так =( попробуйте другую ссылку';
   }
 
   return feedback;
@@ -74,6 +79,16 @@ const buildContentFrame = () => {
   return elSection;
 };
 
+const makeSpinner = () => {
+  const div =document.createElement('div');
+  div.classList.add('d-flex', 'justify-content-center');
+  const tamlate = `<div class="spinner-border" role="status">
+    <span class="visually-hidden">Загрузка...</span>
+  </div>`;
+  div.innerHTML = tamlate;
+  return div;
+};
+
 export default (state) => onChange(state, (path, value) => {
   switch (value) {
     case 'handling':
@@ -83,23 +98,18 @@ export default (state) => onChange(state, (path, value) => {
       console.log('failed');
       break;
     case 'addingposts':
-      if (document.querySelectorAll('.container-fluid.p-5').length !== 1) {
-        document.querySelectorAll('.container-fluid.p-5')[1].innerHTML = '';
-      }
-      elColMd10.appendChild(stausLinkGenerator(true));
+      elColMd10.appendChild(stausLinkGenerator('addingposts'));
       elContent.appendChild(buildContentFrame());
       document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state));
       document.querySelector('.posts').querySelector('ul').append(...addAllPosts(state));
       break;
-    case 'valid':
-      if (document.querySelector('.feedback') !== null) {
-        elInput.classList.remove('is-invalid');
-        document.querySelector('.feedback').remove();
-      }
+    case 'dataIsWrong':
+      elColMd10.appendChild(stausLinkGenerator('dataIsWrong'));
+      elInput.classList.add('is-invalid');
       break;
     // case 'finished':
-    case 'notvalid':
-      elColMd10.appendChild(stausLinkGenerator(false));
+    case 'linkIsNotValid':
+      elColMd10.appendChild(stausLinkGenerator('linkIsNotValid'));
       elInput.classList.add('is-invalid');
       break;
     default:
