@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import * as yup from 'yup';
 // import handler from './handler';
+import _ from 'lodash';
 import view from './view';
 import getXML, { isValidData } from './utilits';
 import parser from './parser';
@@ -30,24 +31,27 @@ export default () => {
       .then((link) => {
         state.currentLink.validateStatus = true;
         state.currentLink.data = link;
-        state.addedLinks.push(link);
+        if (_.findIndex(state.addedLinks, { link }) === -1) {
+          state.addedLinks.push({ link });
 
-        view(state).mainstate = 'gettingData';
-        getXML(state.currentLink.data).then((XML) => isValidData(XML.data))
-          .catch((err) => {
-            view(state).mainstate = 'dataIsWrong';
-            throw new Error(err);
-          })
-          .then((dataXML) => {
-            view(state).mainstate = 'hendlingGettedData';
-            const { feed, posts } = parser(dataXML);
-            state.feeds = [...state.feeds, ...feed];
-            state.posts = [...state.posts, ...posts];
-          })
-          .then(() => {
-            view(state).mainstate = 'addingposts';
-            console.log('the end');
-          });
+          view(state).mainstate = 'gettingData';
+          getXML(state.currentLink.data).then((XML) => isValidData(XML.data))
+            .catch((err) => {
+              view(state).mainstate = 'dataIsWrong';
+              throw new Error(err);
+            })
+            .then((dataXML) => {
+              view(state).mainstate = 'hendlingGettedData';
+              const { feed, posts } = parser(dataXML);
+              state.feeds = [...state.feeds, ...feed];
+              state.posts = [...state.posts, ...posts];
+            })
+            .then(() => {
+              view(state).mainstate = 'addingposts';
+              console.log('the end');
+              console.log(state);
+            });
+        } else view(state).mainstate = 'rssAlradyExist';
       }).catch((err) => {
         view(state).mainstate = 'linkIsNotValid';
         throw new Error(err);

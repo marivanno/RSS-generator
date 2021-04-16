@@ -19,11 +19,19 @@ const stausLinkGenerator = (status) => {
   if (status === 'linkIsNotValid') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
     feedback.textContent = 'Ссылка должна быть валидным URL';
+    elInput.classList.add('is-invalid');
   }
 
   if (status === 'dataIsWrong') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
     feedback.textContent = 'С Вашими данными по ссылке что-то не так =( попробуйте другую ссылку';
+    elInput.classList.add('is-invalid');
+  }
+
+  if (status === 'rssAlradyExist') {
+    feedback.classList.add('feedback', 'text-success', 'text-danger');
+    feedback.textContent = 'RSS уже существует';
+    elInput.classList.add('is-invalid');
   }
 
   return feedback;
@@ -62,6 +70,7 @@ const addAllFeeds = (item) => item.feeds.map(buildElFeeds);
 const buildContentFrame = () => {
   const elSection = document.createElement('section');
   elSection.classList.add('container-fluid', 'p-5');
+  elSection.id = 'content';
   const tamplate = `
     <div class="row">
       <div class="col-md-10 col-lg-8 mx-auto feeds">
@@ -79,38 +88,28 @@ const buildContentFrame = () => {
   return elSection;
 };
 
-const makeSpinner = () => {
-  const div =document.createElement('div');
-  div.classList.add('d-flex', 'justify-content-center');
-  const tamlate = `<div class="spinner-border" role="status">
-    <span class="visually-hidden">Загрузка...</span>
-  </div>`;
-  div.innerHTML = tamlate;
-  return div;
-};
 
 export default (state) => onChange(state, (path, value) => {
   switch (value) {
-    case 'handling':
-      console.log('spinner');
+    case 'hendlingGettedData':
+      console.log('waiting');
       break;
-    case 'failed':
-      console.log('failed');
+    case 'rssAlradyExist':
+      elColMd10.appendChild(stausLinkGenerator('rssAlradyExist'));
       break;
     case 'addingposts':
       elColMd10.appendChild(stausLinkGenerator('addingposts'));
+      document.querySelector('#content').remove();
       elContent.appendChild(buildContentFrame());
       document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state));
       document.querySelector('.posts').querySelector('ul').append(...addAllPosts(state));
       break;
     case 'dataIsWrong':
       elColMd10.appendChild(stausLinkGenerator('dataIsWrong'));
-      elInput.classList.add('is-invalid');
       break;
     // case 'finished':
     case 'linkIsNotValid':
       elColMd10.appendChild(stausLinkGenerator('linkIsNotValid'));
-      elInput.classList.add('is-invalid');
       break;
     default:
       break;
