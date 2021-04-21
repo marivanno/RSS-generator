@@ -4,7 +4,6 @@ import updater from './updater';
 import initView from './view';
 
 const state = {
-  timerId: 'null',
   mainstate: 'starting',
   currentLink: null,
   addedLinks: [],

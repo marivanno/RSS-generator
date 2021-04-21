@@ -10,8 +10,7 @@ export default (link) => axios.get(`${corsProxy}${link}`).catch((err) => {
 
 export const isValidData = (data) => new Promise((resolve, reject) => {
   const parserDom = new DOMParser();
-  const dom = parserDom.parseFromString(data, 'text/xml');
-  console.log(dom)
+  const dom = parserDom.parseFromString(data, 'application/xml');
   if (dom.documentElement.tagName === 'html') {
     reject(new Error('it is wrong data'));
     return;

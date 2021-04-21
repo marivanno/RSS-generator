@@ -32,7 +32,9 @@ const stausLinkGenerator = (status) => {
   return feedback;
 };
 
-const showModalWindow = (item) => () => {
+const showModalWindow = (item) => (e) => {
+  e.target.previousElementSibling.classList.remove('font-weight-bold');
+  e.target.previousElementSibling.classList.add('font-weight-normal');
   document.querySelector('.modal-title').textContent = `${item.title}`;
   document.querySelector('.modal-body').textContent = `${item.description}`;
   document.querySelector('.full-article').setAttribute('href', `${item.link}`);
@@ -86,7 +88,7 @@ const buildContentFrame = () => {
 export default (state) => onChange(state, (path, value) => {
   switch (value) {
     case 'hendlingGettedData':
-      // console.log('waiting');
+      console.log('waiting');
       break;
     case 'rssAlradyExist':
       elColMd10.appendChild(stausLinkGenerator('rssAlradyExist'));
@@ -99,6 +101,7 @@ export default (state) => onChange(state, (path, value) => {
       document.querySelector('.posts').querySelector('ul').append(...addAllPosts(state));
       break;
     case 'updating':
+      console.log('update');
       document.querySelector('#content').remove();
       elContent.appendChild(buildContentFrame());
       document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state));
