@@ -15,20 +15,15 @@ const stausLinkGenerator = (status) => {
   if (status === 'addingposts') {
     feedback.classList.add('feedback', 'text-success', 'text-sucsess');
     feedback.textContent = 'RSS успешно загружен';
-  }
-  if (status === 'linkIsNotValid') {
+  } else if (status === 'linkIsNotValid') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
     feedback.textContent = 'Ссылка должна быть валидным URL';
     elInput.classList.add('is-invalid');
-  }
-
-  if (status === 'dataIsWrong') {
+  } else if (status === 'dataIsWrong') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
     feedback.textContent = 'С Вашими данными по ссылке что-то не так =( попробуйте другую ссылку';
     elInput.classList.add('is-invalid');
-  }
-
-  if (status === 'rssAlradyExist') {
+  } else if (status === 'rssAlradyExist') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
     feedback.textContent = 'RSS уже существует';
     elInput.classList.add('is-invalid');
@@ -88,17 +83,22 @@ const buildContentFrame = () => {
   return elSection;
 };
 
-
 export default (state) => onChange(state, (path, value) => {
   switch (value) {
     case 'hendlingGettedData':
-      console.log('waiting');
+      // console.log('waiting');
       break;
     case 'rssAlradyExist':
       elColMd10.appendChild(stausLinkGenerator('rssAlradyExist'));
       break;
     case 'addingposts':
       elColMd10.appendChild(stausLinkGenerator('addingposts'));
+      document.querySelector('#content').remove();
+      elContent.appendChild(buildContentFrame());
+      document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state));
+      document.querySelector('.posts').querySelector('ul').append(...addAllPosts(state));
+      break;
+    case 'updating':
       document.querySelector('#content').remove();
       elContent.appendChild(buildContentFrame());
       document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state));
