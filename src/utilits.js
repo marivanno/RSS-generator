@@ -1,10 +1,9 @@
 /* eslint-disable import/no-cycle */
 import axios from 'axios';
-import view from './view';
 
-// const corsProxy = 'https://api.allorigins.win/raw?url=';
+const corsProxy = 'https://hexlet-allorigins.herokuapp.com/get?url=';
 
-export default (link) => axios.get(link).catch((err) => {
+export default (link) => axios.get(`${corsProxy}${encodeURIComponent(link)}&disableCache=true`).catch((err) => {
   throw console.error(err);
 });
 

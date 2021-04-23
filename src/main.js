@@ -4,7 +4,6 @@ import _ from 'lodash';
 import getXML, { isValidData } from './utilits';
 import parser from './parser';
 
-
 export default (state) => {
   const form = document.querySelector('form');
 
@@ -21,7 +20,7 @@ export default (state) => {
           state.addedLinks.push({ link });
 
           state.mainstate = 'gettingData';
-          getXML(state.currentLink).then((XML) => isValidData(XML.data))
+          getXML(state.currentLink).then((XML) => isValidData(XML.data.contents))
             .catch((err) => {
               state.mainstate = 'dataIsWrong';
               state.addedLinks.pop();
@@ -31,7 +30,7 @@ export default (state) => {
               state.mainstate = 'hendlingGettedData';
               const { feed, posts } = parser(dataXML);
               state.feeds.push({ ...feed, ...{ link: state.currentLink } });
-              state.posts = [...state.posts, ...posts];
+              state.posts = [...posts, ...state.posts];
             })
             .then(() => {
               state.mainstate = 'addingposts';

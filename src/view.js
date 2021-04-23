@@ -1,10 +1,14 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-console */
 import onChange from 'on-change';
 import 'bootstrap/js/src/modal';
+import i18n from 'i18next';
 
 const elColMd10 = document.querySelector('.col-md-10');
 const elInput = document.querySelector('input');
 const elContent = document.querySelector('.flex-grow-1');
+const makeButtonActive = () => document.querySelector('[type="submit"]').disabled = false;
+const blockButton = () => document.querySelector('[type="submit"]').disabled = true;
 
 const stausLinkGenerator = (status) => {
   const feedback = document.createElement('div');
@@ -14,18 +18,18 @@ const stausLinkGenerator = (status) => {
   }
   if (status === 'addingposts') {
     feedback.classList.add('feedback', 'text-success', 'text-sucsess');
-    feedback.textContent = 'RSS успешно загружен';
+    feedback.textContent = i18n.t('dataSuccessLoaded');
   } else if (status === 'linkIsNotValid') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
-    feedback.textContent = 'Ссылка должна быть валидным URL';
+    feedback.textContent = i18n.t('linkMustBeValid');
     elInput.classList.add('is-invalid');
   } else if (status === 'dataIsWrong') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
-    feedback.textContent = 'С Вашими данными по ссылке что-то не так =( попробуйте другую ссылку';
+    feedback.textContent = i18n.t('dataMustBeRss');
     elInput.classList.add('is-invalid');
   } else if (status === 'rssAlradyExist') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
-    feedback.textContent = 'RSS уже существует';
+    feedback.textContent = i18n.t('rssAlreadyExist');
     elInput.classList.add('is-invalid');
   }
 
@@ -60,9 +64,9 @@ const buildElFeeds = (item) => {
   return li;
 };
 
-const addAllPosts = (item) => item.posts.map(buildElPost);
-
-const addAllFeeds = (item) => item.feeds.map(buildElFeeds);
+const addAllPosts = (posts) => posts.map(buildElPost);
+const addNewPosts = (tmpNewPosts) => tmpNewPosts.map(buildElPost);
+const addAllFeeds = (feeds) => feeds.map(buildElFeeds);
 
 const buildContentFrame = () => {
   const elSection = document.createElement('section');
@@ -87,32 +91,33 @@ const buildContentFrame = () => {
 
 export default (state) => onChange(state, (path, value) => {
   switch (value) {
-    case 'hendlingGettedData':
-      console.log('waiting');
+    case 'start':
+      break;
+    case 'gettingData':
+      blockButton();
       break;
     case 'rssAlradyExist':
       elColMd10.appendChild(stausLinkGenerator('rssAlradyExist'));
+      makeButtonActive();
       break;
     case 'addingposts':
       elColMd10.appendChild(stausLinkGenerator('addingposts'));
       document.querySelector('#content').remove();
       elContent.appendChild(buildContentFrame());
-      document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state));
-      document.querySelector('.posts').querySelector('ul').append(...addAllPosts(state));
+      document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state.feeds));
+      document.querySelector('.posts').querySelector('ul').append(...addAllPosts(state.posts));
+      makeButtonActive();
       break;
     case 'updating':
-      console.log('update');
-      document.querySelector('#content').remove();
-      elContent.appendChild(buildContentFrame());
-      document.querySelector('.feeds').querySelector('ul').append(...addAllFeeds(state));
-      document.querySelector('.posts').querySelector('ul').append(...addAllPosts(state));
+      document.querySelector('.posts').querySelector('ul').prepend(...addNewPosts(state.tmpNewPosts));
       break;
     case 'dataIsWrong':
       elColMd10.appendChild(stausLinkGenerator('dataIsWrong'));
+      makeButtonActive();
       break;
-    // case 'finished':
     case 'linkIsNotValid':
       elColMd10.appendChild(stausLinkGenerator('linkIsNotValid'));
+      makeButtonActive();
       break;
     default:
       break;
