@@ -2,9 +2,9 @@
 import axios from 'axios';
 import view from './view';
 
-const corsProxy = 'https://api.allorigins.win/raw?url=';
+// const corsProxy = 'https://api.allorigins.win/raw?url=';
 
-export default (link) => axios.get(`${corsProxy}${link}`).catch((err) => {
+export default (link) => axios.get(link).catch((err) => {
   throw console.error(err);
 });
 

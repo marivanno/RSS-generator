@@ -12,7 +12,6 @@ const state = {
 };
 
 const watchedState = initView(state);
-
 app(watchedState);
 updater(watchedState);
 
