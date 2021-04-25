@@ -15,16 +15,16 @@ const state = {
   feeds: [],
 };
 
+i18n.init({
+  lng: 'ru',
+  debug: true,
+  resources: {
+    ru, en,
+  },
+});
+
 export default () => {
-  i18n.init({
-    lng: 'ru',
-    debug: true,
-    resources: {
-      ru, en,
-    },
-  }).then((t) => {
-    const watchedState = initView(state, t);
-    app(watchedState);
-    updater(watchedState);
-  });
+  const watchedState = initView(state);
+  app(watchedState);
+  updater(watchedState);
 };
