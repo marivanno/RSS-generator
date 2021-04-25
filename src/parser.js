@@ -10,7 +10,6 @@ const parser = (xmlData) => {
     description: dom.querySelector('description').textContent,
   };
   const posts = Array.from(postsNode).map((item) => ({
-    // feedid: feed.id,
     title: item.querySelector('title').textContent,
     description: item.querySelector('description').textContent,
     link: item.querySelector('link').textContent,

@@ -7,7 +7,9 @@ import i18n from 'i18next';
 const elColMd10 = document.querySelector('.col-md-10');
 const elInput = document.querySelector('input');
 const elContent = document.querySelector('.flex-grow-1');
+
 const makeButtonActive = () => document.querySelector('[type="submit"]').disabled = false;
+
 const blockButton = () => document.querySelector('[type="submit"]').disabled = true;
 
 const stausLinkGenerator = (status) => {
@@ -54,7 +56,7 @@ const buildElPost = (item) => {
   return li;
 };
 
-const buildElFeeds = (item) => {
+const buildElFeed = (item) => {
   const li = document.createElement('li');
   li.classList.add('list-group-item');
   const tamplate = `
@@ -65,8 +67,10 @@ const buildElFeeds = (item) => {
 };
 
 const addAllPosts = (posts) => posts.map(buildElPost);
+
 const addNewPosts = (tmpNewPosts) => tmpNewPosts.map(buildElPost);
-const addAllFeeds = (feeds) => feeds.map(buildElFeeds);
+
+const addAllFeeds = (feeds) => feeds.map(buildElFeed);
 
 const buildContentFrame = () => {
   const elSection = document.createElement('section');

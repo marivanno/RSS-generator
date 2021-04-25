@@ -4,6 +4,8 @@ import _ from 'lodash';
 import getXML, { isValidData } from './utilits';
 import parser from './parser';
 
+const hasLink = (links, link) => _.findIndex(links, { link }) === -1;
+
 export default (state) => {
   const form = document.querySelector('form');
 
@@ -16,11 +18,11 @@ export default (state) => {
     schema.validate(state.currentLink)
       .then((link) => {
         state.currentLink = link;
-        if (_.findIndex(state.addedLinks, { link }) === -1) {
+        if (hasLink(state.addedLinks, link)) {
           state.addedLinks.push({ link });
-
           state.mainstate = 'gettingData';
-          getXML(state.currentLink).then((XML) => isValidData(XML.data.contents))
+          getXML(state.currentLink)
+            .then((XML) => isValidData(XML.data.contents))
             .catch((err) => {
               state.mainstate = 'dataIsWrong';
               state.addedLinks.pop();
