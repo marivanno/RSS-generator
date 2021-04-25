@@ -1,7 +1,6 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-console */
 import onChange from 'on-change';
-import 'bootstrap/js/src/modal';
 import i18n from 'i18next';
 
 const elColMd10 = document.querySelector('.col-md-10');
