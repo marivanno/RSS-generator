@@ -1,10 +1,10 @@
 import i18n from 'i18next';
 import 'bootstrap/scss/bootstrap.scss';
-import app from './main';
-import updater from './updater';
-import initView from './view';
-import ru from './locales/ru';
-import en from './locales/ru';
+import app from './src/main';
+import updater from './src/updater';
+import initView from './src/view';
+import ru from './src/locales/ru';
+import en from './src/locales/en';
 
 const state = {
   mainstate: 'starting',
@@ -17,7 +17,7 @@ const state = {
 
 
 i18n.init({
-  lng: 'ru',
+  lng: 'en',
   debug: true,
   resources: {
     ru, en,
