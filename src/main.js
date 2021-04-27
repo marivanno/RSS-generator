@@ -6,9 +6,9 @@ import parser from './parser';
 
 const hasLink = (links, link) => _.findIndex(links, { link }) === -1;
 
-export default (state) => {
-  const form = document.querySelector('.rss-form');
+const form = document.querySelector('.rss-form');
 
+export default (state) => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
