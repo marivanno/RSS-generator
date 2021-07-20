@@ -5,4 +5,5 @@
 [![CI](https://github.com/marivanno/frontend-project-lvl3/actions/workflows/my-ga.yml/badge.svg)](https://github.com/marivanno/frontend-project-lvl3/actions/workflows/my-ga.yml)
 
 You can add and read a lot of RSS news on one page.
+
 Demo is here: https://frontend-project-marivanno.vercel.app/
