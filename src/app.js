@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import 'bootstrap/scss/bootstrap.scss';
+import 'bootstrap';
 import app from './main';
 import updater from './updater';
 import initView from './view';

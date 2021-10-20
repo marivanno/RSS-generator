@@ -30,7 +30,7 @@ const stausLinkGenerator = (status) => {
     elInput.classList.add('is-invalid');
   } else if (status === 'rssAlradyExist') {
     feedback.classList.add('feedback', 'text-success', 'text-danger');
-    feedback.textContent = i18n.t('rssAlreadyExist');
+    feedback.textContent = i18n.t('rssAlreadyExists');
     elInput.classList.add('is-invalid');
   }
 
