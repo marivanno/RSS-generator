@@ -26,7 +26,6 @@ export default (state) => {
         throw new Error();
       }
     } catch (err) {
-      console.log('...................')
       hasLink(state.addedLinks, state.currentLink)
         ? state.mainstate = 'rssAlradyExist'
         : state.mainstate = 'linkIsNotValid';
